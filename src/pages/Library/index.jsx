@@ -1,6 +1,7 @@
 import React from 'react';
-import StoryCard from './StoryCard';
 import Header from '../../components/Header'
+import Example from '../../components/Library/StoryCard';
+
 
 const Index = () => {
   const myStories = [
@@ -28,10 +29,10 @@ const Index = () => {
   ];
 
   return (
-    <div >
+    <div className='max-w-screen'>
       {/* Header */}
       <Header title="Stories Library" />
-    
+      <Example />
       
     </div>
   );

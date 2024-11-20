@@ -28,7 +28,7 @@ const Sidebar = () => {
         onClick={toggleSidebar}
         className="fixed z-20 p-2 text-white bg-deepPurple 
         rounded-full shadow-lg 
-        lg:hidden top-6 right-6"
+        lg:hidden top-3 right-3"
       >
         <HiMenu className="text-2xl" />
       </button>
@@ -36,7 +36,7 @@ const Sidebar = () => {
       {/* Sidebar (Positioned on the left in mobile) */}
       <div
         className={`fixed top-0 lg:left-0 lg:transform-none 
-          lg:w-64 h-full w-[50vw] bg-white shadow-lg transition-transform 
+          lg:w-64 h-full w-[60vw] bg-white shadow-lg transition-transform 
           transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } left-0 lg:right-auto z-30 lg:translate-x-0`}

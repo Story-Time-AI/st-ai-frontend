@@ -9,7 +9,7 @@ const MainLayout = () => {
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 lg:ml-64 p-4">
+      <div className="flex-1 lg:ml-64 md:p-4">
         <Outlet />
       </div>
     </div>
