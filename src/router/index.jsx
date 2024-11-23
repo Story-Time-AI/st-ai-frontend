@@ -1,9 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import Login from '../pages/Auth/Login'
 import Signup from '../pages/Auth/Signup'
-
 import MainLayout from '../layouts/MainLayout'
 import Home from '../pages/home'
 import ImageCartoonifier  from '../pages/ImageCartoonifier'
@@ -12,6 +10,8 @@ import Profile  from '../pages/Profile'
 import Library  from '../pages/Library'
 import ManageUsers from '../pages/Admin/ManageUsers'
 import ManageStories from '../pages/Admin/ManageStories'
+import StoryPreview from '../components/StoryDetails';
+import UserDetails from '../components/Admin/ManageUsers/UserDetails';
 
 const AppRouter = () => {
   return (
@@ -31,6 +31,8 @@ const AppRouter = () => {
           <Route path="/library" element={<Library />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/manage-stories" element={<ManageStories />} />
+          <Route path="/story-details" element={<StoryPreview />} />
+          <Route path="/manage-users/:id" element={<UserDetails />} />
 
         </Route>
       </Routes>
