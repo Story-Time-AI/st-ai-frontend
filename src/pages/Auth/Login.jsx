@@ -4,20 +4,27 @@ import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button/Button';
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  
+  const navigate = useNavigate();
+
 
   const onSubmit = (data) => {
     setIsLoading(true);
     console.log(data); // Logging form data for debugging
-    setTimeout(() => {
-      alert('Logged in successfully!');
-      setIsLoading(false);
-    }, 2000);
+    // setTimeout(() => {
+    //   alert('Logged in successfully!');
+    //   setIsLoading(false);
+    // }, 2000);
+  
+  navigate('/library')
   };
 
   return (

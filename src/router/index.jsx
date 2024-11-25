@@ -21,10 +21,9 @@ const AppRouter = () => {
         {/* Authentication Routes */}
           <Route path="/signin" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
+          <Route path="/" element={<Home />} />
         {/* Main Routes */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
           <Route path="/story-generator" element={<GenerateStory />} />
           <Route path="/image-cartoonifier" element={<ImageCartoonifier />} />
           <Route path="/profile" element={<Profile />} />

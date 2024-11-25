@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,useNavigate } from 'react-router-dom';
 import { FaHome, FaUser,FaUsers, FaBook, FaShoppingCart } from 'react-icons/fa';
 import {MdAutoAwesome } from 'react-icons/md';
 import {GiBookshelf  } from 'react-icons/gi';
@@ -20,6 +20,9 @@ const Sidebar = () => {
   const closeSidebar = () => {
     setIsOpen(false);
   };
+
+  const navigate = useNavigate();
+
 
   return (
     <div>
@@ -42,7 +45,7 @@ const Sidebar = () => {
         } left-0 lg:right-auto z-30 lg:translate-x-0`}
       >
         {/* Logo */}
-        <div className="flex items-center justify-center py-4 border-b">
+        <div onClick={()=>navigate('/')} className="flex items-center justify-center py-4 border-b">
           <img src={logo} alt="Logo" className="w-28" />
         </div>
 
