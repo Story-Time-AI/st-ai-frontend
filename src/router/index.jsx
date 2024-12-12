@@ -25,7 +25,7 @@ const AppRouter = () => {
         {/* Main Routes */}
         <Route element={<MainLayout />}>
           <Route path="/story-generator" element={<GenerateStory />} />
-          <Route path="/image-cartoonifier" element={<ImageCartoonifier />} />
+          <Route path="/character-creator" element={<ImageCartoonifier />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/library" element={<Library />} />
           <Route path="/manage-users" element={<ManageUsers />} />

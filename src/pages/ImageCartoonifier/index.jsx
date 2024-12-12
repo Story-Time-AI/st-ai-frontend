@@ -29,7 +29,7 @@ const Index = () => {
   return (
     <div>
       {/* <h1 className="text-3xl font-bold text-primaryDarkBlue mb-6">Image Cartoonifier</h1> */}
-<Header title="Image Cartoonifier" />
+<Header title="Character Creator" />
 
       <div data-theme="light" className="flex flex-col items-center justify-center md:mt-4 mt-5 p-8 bg-white rounded-lg max-w-xl mx-auto">
         {/* Title */}
@@ -86,7 +86,7 @@ const Index = () => {
 
           {/* Generate Button and Reset Icon */}
           <div className="flex w-10/12 items-center space-x-4">
-            <button type="submit" className="btn bg-deepPurple text-white w-full">Generate Cartoon</button>
+            <button type="submit" className="btn bg-deepPurple text-white w-full">Generate Character</button>
             <button type="button" onClick={() => setUploadedImage(null)} className="btn btn-circle btn-outline text-deepPurple border-deepPurple">
               <FaSyncAlt />
             </button>

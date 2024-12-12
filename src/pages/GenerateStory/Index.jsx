@@ -6,7 +6,7 @@ export default function Index() {
   return (
     <div>
         <Header title="Generate Story"/>
-      <GenerateStoryComponent />
+        <GenerateStoryComponent />
     </div>
   )
 }

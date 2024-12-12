@@ -64,15 +64,15 @@ const Sidebar = () => {
             <MdAutoAwesome className="mr-3 text-xl" /> Generate Story
           </Link>
           <Link
-            to="/image-cartoonifier"
+            to="/character-creator"
             className={`flex items-center px-4 py-2 mx-2 rounded-lg hover:bg-gray-100 ${
-              location.pathname === '/image-cartoonifier'
+              location.pathname === '/character-creator'
                 ? 'font-semibold text-deepPurple border-r-4 border-deepPurple'
                 : 'text-lightGrayBlue'
             }`}
             onClick={closeSidebar} // Close sidebar when clicking the link
           >
-            <FaShoppingCart className="mr-3 text-xl" /> Image Cartoonifier
+            <FaShoppingCart className="mr-3 text-xl" /> Character Creator
           </Link>
           <Link
             to="/library"

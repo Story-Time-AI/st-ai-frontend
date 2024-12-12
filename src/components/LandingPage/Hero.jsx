@@ -10,7 +10,7 @@ const Hero = () => {
   {/* Logo */}
   <div className="flex-1">
     <a className="btn btn-ghost normal-case text-xl">
-      <span className="text-primary">📚 StoryTimeAI</span>
+      <span className="text-primary">📚 StoryTymeAI</span>
     </a>
   </div>
 
@@ -67,7 +67,8 @@ const Hero = () => {
       </li>
     </ul>
   <Link to='/signin'>  <button  className="btn btn-primary ml-4">
-      Create a children's book
+      Create Your Story
+
     </button></Link>
   </div>
 </header>
@@ -87,14 +88,14 @@ const Hero = () => {
             <div className="flex-1">
 
                 <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Create a special book for your child.
+                Custom children’s books in five simple steps.
                 </h1>
                 <p className="py-6 text-lg md:text-xl text-gray-600 md:max-w-lg">
-                A unique, personalized children's book for every child with a
-                custom-made story and stunning illustrations for every occasion.
+                Make your child the main character in their own adventure. Enjoy custom-made stories and stunning illustrations with the click of a few buttons. 
                 </p>
                 <button className="btn btn-primary mt-4">
-                Create a children's book
+                Create Your Story
+
                 </button>
             </div>
 

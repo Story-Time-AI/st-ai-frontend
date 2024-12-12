@@ -29,12 +29,12 @@ const Index = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Character Selection */}
         <div>
-  <h2 className="text-md text-gray-600 font-bold mb-2">Choose your main character</h2>
+  <h2 className="text-md text-gray-600 font-bold mb-2">Choose Your Main Character</h2>
   <select
     className="select select-bordered w-full"
     {...register('mainCharacter', { required: 'Please select a main character' })}
   >
-    <option value="" disabled>Select a character</option>
+    <option value="" disabled>Select a Character</option>
     {characters.map((character) => (
       <option
         key={character.id}
@@ -52,7 +52,7 @@ const Index = () => {
 
         {/* Story Title */}
         <div>
-          <label className="text-sm font-bold text-gray-600 mb-2">Enter your story title</label>
+          <label className="text-sm font-bold text-gray-600 mb-2">Enter Your Story Title</label>
           <input
             type="text"
             placeholder="My story name"
@@ -64,7 +64,7 @@ const Index = () => {
 
         {/* Character Name */}
         <div>
-          <label className="text-sm font-bold text-gray-600 mb-2">Name your character name</label>
+          <label className="text-sm font-bold text-gray-600 mb-2">Enter Your Character's Name</label>
           <input
             type="text"
             placeholder="Your character name"
@@ -76,7 +76,7 @@ const Index = () => {
 
         {/* Story Type Selection */}
         <div>
-          <h2 className="text-lg font-bold mb-4">Choose story type</h2>
+          <h2 className="text-lg font-bold mb-4">Choose Story Type</h2>
           <div className="space-y-2">
             {['Create Your Own Story', 'AI Written Story', 'Premade Story Template'].map((type) => (
               <label
@@ -102,7 +102,7 @@ const Index = () => {
         {/* Conditional Rendering Based on Story Type */}
         {selectedStoryType === 'Create Your Own Story' && (
           <div>
-            <label className="text-sm font-bold text-gray-600 mb-2">Enter your story idea</label>
+            <label className="text-sm font-bold text-gray-600 mb-2">Enter Your Story Idea</label>
             <textarea
               className="textarea textarea-bordered w-full"
               placeholder="Write your story idea and scenario here"
@@ -111,7 +111,7 @@ const Index = () => {
             {errors.storyIdea && <p className="text-red-500 text-sm mt-1">{errors.storyIdea.message}</p>}
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div>
-                <label className="text-sm font-bold text-gray-600">Enter your number of pages</label>
+                <label className="text-sm font-bold text-gray-600">Enter Your Number of Pages</label>
                 <input
                   type="number"
                   placeholder="Number of pages"
@@ -120,7 +120,7 @@ const Index = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-bold text-gray-600">Select page number to edit</label>
+                <label className="text-sm font-bold text-gray-600">Select Page Number to Edit</label>
                 <select className="select select-bordered w-full" {...register('pageNumber')}>
                   <option value="1">Page 1</option>
                   <option value="2">Page 2</option>
@@ -143,7 +143,7 @@ const Index = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-bold text-gray-600">Number of Sentences per Page</label>
+              <label className="text-sm font-bold text-gray-600">Number of Sentences Per Page</label>
               <input
                 type="number"
                 placeholder="Number of sentences per page"
@@ -156,7 +156,7 @@ const Index = () => {
 
         {selectedStoryType === 'Premade Story Template' && (
           <div>
-            <h2 className="text-lg font-bold mb-4">Choose story template</h2>
+            <h2 className="text-lg font-bold mb-4">Choose Story Template</h2>
             <div className="flex items-center space-x-4">
               {[1, 2, 3].map((template) => (
                 <div
