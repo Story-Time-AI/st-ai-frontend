@@ -1,39 +1,24 @@
-import React from 'react';
-import Header from '../../components/Header'
-import Example from '../../components/Library/StoryCard';
-
+import React from "react";
+import Header from "../../components/Header";
+import StoryLibrary from "../../components/Library/StoryLibrary";
+import useFetchStories from "../../hooks/useFetchStories";
 
 const Index = () => {
-  const myStories = [
-    {
-      title: 'Max’s Adventure Through the Seasons',
-      characterName: 'Max',
-      storyType: 'Adventure',
-      imageSrc: 'https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp',
-      buttonText: 'View Story',
-    },
-    {
-      title: 'Max’s Journey in Autumn',
-      characterName: 'Max',
-      storyType: 'Fantasy',
-      imageSrc: 'https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp',
-      buttonText: 'Start Reading',
-    },
-    {
-      title: 'A Magical Day in the Woods',
-      characterName: 'Lily',
-      storyType: 'Fairy Tale',
-      imageSrc: 'https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp',
-      buttonText: 'View Story',
-    },
-  ];
+  const token = localStorage.getItem("token") || "";
+  const { apiData, loading, error,refetchStories } = useFetchStories(token);
 
   return (
-    <div className='max-w-screen'>
+    <div className="max-w-screen">
       {/* Header */}
       <Header title="Stories Library" />
-      <Example />
       
+      {/* Pass the apiData directly to StoryLibrary */}
+      <StoryLibrary 
+        apiData={apiData}
+        isLoading={loading}
+        error={error}
+        refetchStories={refetchStories}
+      />
     </div>
   );
 };

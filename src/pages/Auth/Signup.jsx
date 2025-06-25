@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import axios from 'axios'; // <-- Import axios
+
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button/Button';
 
@@ -9,22 +11,50 @@ const SignUp = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (data) => {
-    setIsLoading(true);
-    console.log(data); // Logging form data for debugging
-    setTimeout(() => {
-      alert('Registered successfully!');
-      setIsLoading(false);
-    }, 2000);
-  };
-
   // To check if the password and confirm password match
   const password = watch('password');
 
+  // Handle form submission
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+
+    try {
+      // POST request to your backend endpoint
+      const response = await axios.post('https://storytymeai-e64xw.ondigitalocean.app//api/v1/auth/register', {
+        username: data.fullName,
+        email: data.email,
+        password: data.password,
+      });
+
+      // If successful, you can handle the success scenario here
+      // e.g., show a success message, redirect, etc.
+      console.log('Server response:', response.data);
+      alert('Registered successfully!');
+      
+    } catch (error) {
+      // Handle and display errors in a user-friendly manner
+      if (error.response) {
+        // The request was made, and the server responded with a status code
+        // that is not in the range of 2xx
+        console.error('Error response data:', error.response.data);
+        // You might have something like `error.response.data.message` coming from your server
+        alert(error.response.data.error || 'Something went wrong. Please try again.');
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response from the server:', error.request);
+        alert('No response from the server. Please try again later.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message);
+        alert('An error occurred. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div data-theme="dark"
-     className="flex items-center justify-center  w-full overflow-y-scroll py-10">
-    
+    <div data-theme="dark" className="flex items-center justify-center w-full overflow-y-scroll py-10">
       <div className="w-full max-w-xl p-8 rounded-lg shadow-lg bg-gray-800">
         <h2 className="text-3xl font-semibold text-start text-white mb-1">Create an Account</h2>
         <p className="text-start text-gray-400 mb-6">Enter your details to create a new account!</p>
@@ -122,10 +152,9 @@ const SignUp = () => {
 
         {/* Sign In Link */}
         <p className="mt-6 text-center text-sm text-gray-400">
-          Already have an account? <a href="/login" className="text-blue-400 font-semibold hover:underline">Sign In</a>
+          Already have an account? <a href="/signin" className="text-blue-400 font-semibold hover:underline">Sign In</a>
         </p>
       </div>
-
     </div>
   );
 };

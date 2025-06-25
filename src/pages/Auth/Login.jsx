@@ -1,37 +1,68 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
+import { FaUser, FaGoogle } from 'react-icons/fa';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
-import Input from '../../components/Form/Input';
-import Button from '../../components/Button/Button';
+import axios from 'axios'; // <--- Import axios
 import { useNavigate } from "react-router-dom";
 
+import Input from '../../components/Form/Input';
+import Button from '../../components/Button/Button';
 
 const Login = () => {
-
+ 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   
   const navigate = useNavigate();
 
-
-  const onSubmit = (data) => {
+  // Handle form submission
+  const onSubmit = async (data) => {
     setIsLoading(true);
-    console.log(data); // Logging form data for debugging
-    // setTimeout(() => {
-    //   alert('Logged in successfully!');
-    //   setIsLoading(false);
-    // }, 2000);
-  
-  navigate('/library')
+    try {
+      // Send login data to your backend
+      const response = await axios.post('https://storytymeai-e64xw.ondigitalocean.app//api/v1/auth/login', {
+        email: data.email,
+        password: data.password,
+      });
+
+      // If successful, handle the response
+      // e.g., save token, navigate to a protected route, etc.
+      console.log('Login success:', response.data);
+      localStorage.setItem('token', response.data.token);
+      // If your server returns a token, for example:
+      // localStorage.setItem('token', response.data.token);
+
+      // Navigate to library (or any other route)
+      navigate('/library');
+    } catch (error) {
+      // Handle error scenarios
+      if (error.response) {
+        // The server responded with a non-2xx status code
+        console.error('Error response:', error.response.data);
+        // Display the server's error message (if available)
+        alert(error.response.data.error || 'Something went wrong. Please try again.');
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+        alert('No response from the server. Please try again later.');
+      } else {
+        // An error occurred in setting up the request
+        console.error('Request error:', error.message);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div data-theme="dark" className="flex items-center justify-center h-auto py-10 w-full">
       <div className="w-full max-w-md p-8 rounded-lg shadow-lg bg-gray-800">
         <h2 className="text-3xl font-semibold text-start text-white mb-1">Sign In</h2>
-        <p className="text-start text-gray-400 mb-6">Enter your email and password to sign in!</p>
+        <p className="text-start text-gray-400 mb-6">
+          Enter your email and password to sign in!
+        </p>
         
         {/* Google Sign-in Button */}
         <button className="btn btn-outline w-full mb-4 flex items-center justify-center gap-2 text-gray-300 border-gray-600 hover:border-gray-500 hover:text-white">
@@ -75,7 +106,7 @@ const Login = () => {
             {...register('password', {
               required: 'Password is required',
               minLength: {
-                value: 8,
+                value: 6,
                 message: 'Password must be at least 8 characters',
               },
             })}
@@ -90,9 +121,11 @@ const Login = () => {
                 onChange={() => setRememberMe(!rememberMe)}
                 className="checkbox checkbox-sm"
               />
-              <span className='text-sm'>Keep me logged in</span>
+              <span className="text-sm">Keep me logged in</span>
             </label>
-            <a href="/forgot-password" className="text-sm text-blue-400 hover:underline">Forget password?</a>
+            <a href="/forgot-password" className="text-sm text-blue-400 hover:underline">
+              Forget password?
+            </a>
           </div>
 
           <Button
@@ -108,7 +141,10 @@ const Login = () => {
 
         {/* Sign Up Link */}
         <p className="mt-6 text-center text-sm text-gray-400">
-          Not registered yet? <a href="/signup" className="text-blue-400 font-semibold hover:underline">Create an Account</a>
+          Not registered yet?{' '}
+          <a href="/signup" className="text-blue-400 font-semibold hover:underline">
+            Create an Account
+          </a>
         </p>
       </div>
     </div>
