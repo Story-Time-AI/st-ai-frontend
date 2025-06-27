@@ -12,7 +12,7 @@ import ManageStories from "../pages/Admin/ManageStories/Index";
 import StoryPreview from "../components/StoryPreview";
 import UserDetails from "../components/Admin/ManageUsers/UserDetails";
 import StoryDetails from "../pages/Library/StoryDetails";
-import GenerateStory from "../pages/GenerateStory/index";
+import GenerateStory from "../pages/GenerateStory/Index";
 
 const AppRouter = () => {
   return (
