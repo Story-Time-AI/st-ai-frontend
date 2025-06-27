@@ -5,7 +5,6 @@ import Signup from "../pages/Auth/Signup";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/home";
 import ImageCartoonifier from "../pages/ImageCartoonifier";
-import GenerateStory from "../pages/GenerateStory";
 import Profile from "../pages/Profile";
 import Library from "../pages/Library";
 import ManageUsers from "../pages/Admin/ManageUsers";
@@ -13,6 +12,7 @@ import ManageStories from "../pages/Admin/ManageStories";
 import StoryPreview from "../components/StoryPreview";
 import UserDetails from "../components/Admin/ManageUsers/UserDetails";
 import StoryDetails from "../pages/Library/StoryDetails";
+import GenerateStory from "../pages/GenerateStory/index";
 
 const AppRouter = () => {
   return (
