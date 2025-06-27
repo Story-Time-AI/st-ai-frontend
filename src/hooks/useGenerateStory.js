@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 /**
  * Custom hook for generating AI-written stories
@@ -9,6 +10,9 @@ const useGenerateStory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [storyPages, setStoryPages] = useState([]);
   const [error, setError] = useState(null);
+  
+  // Prevent duplicate story generation requests
+  const isGeneratingRef = useRef(false);
 
   /**
    * Generate an AI-written story
@@ -21,15 +25,29 @@ const useGenerateStory = () => {
    * @returns {Promise} A promise that resolves to the generated story
    */
   const generateStory = async (storyData) => {
+    // Prevent duplicate generation requests
+    if (isGeneratingRef.current) {
+      toast.error('Story generation already in progress!', {
+        id: 'generation-in-progress',
+      });
+      return;
+    }
+
+    isGeneratingRef.current = true;
     setIsLoading(true);
     setError(null);
     
     const token = localStorage.getItem("token");
 
+    // Show loading toast
+    const loadingToast = toast.loading('Creating your magical story...', {
+      id: 'generating-story',
+      duration: Infinity, // Keep until dismissed
+    });
+
     try {
       const response = await axios.post(
-        "http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/generate",
+        "https://storytymeai-e64xw.ondigitalocean.app/api/generate",
         {
           storyTitle: storyData.storyTitle,
           animationStyle: storyData.animationStyle,
@@ -46,11 +64,54 @@ https://storytymeai-e64xw.ondigitalocean.app/api/generate",
       );
 
       setStoryPages(response.data);
+      
+      // Dismiss loading toast and show success
+      toast.dismiss('generating-story');
+      toast.success(`🎉 "${storyData.storyTitle}" has been created successfully!`, {
+        id: 'story-generated',
+        duration: 4000,
+        icon: '📚',
+      });
+
       setIsLoading(false);
+      isGeneratingRef.current = false;
       return response.data;
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to generate story");
+      const errorMessage = err.response?.data?.message || "Failed to generate story";
+      setError(errorMessage);
+      
+      // Dismiss loading toast and show error
+      toast.dismiss('generating-story');
+      
+      // Show specific error messages based on error type
+      if (err.response?.status === 401) {
+        toast.error('Please log in to generate stories', {
+          id: 'auth-error',
+          duration: 5000,
+          icon: '🔒',
+        });
+      } else if (err.response?.status === 429) {
+        toast.error('Too many requests. Please wait a moment and try again.', {
+          id: 'rate-limit-error',
+          duration: 6000,
+          icon: '⏱️',
+        });
+      } else if (err.response?.status === 500) {
+        toast.error('Server error. Our team has been notified.', {
+          id: 'server-error',
+          duration: 5000,
+          icon: '🔧',
+        });
+      } else {
+        toast.error(errorMessage, {
+          id: 'generation-error',
+          duration: 5000,
+          icon: '❌',
+        });
+      }
+
       setIsLoading(false);
+      isGeneratingRef.current = false;
       throw err;
     }
   };
@@ -61,11 +122,38 @@ https://storytymeai-e64xw.ondigitalocean.app/api/generate",
   const resetStory = () => {
     setStoryPages([]);
     setError(null);
+    
+    // Show confirmation toast
+    toast.success('Story cleared successfully', {
+      id: 'story-reset',
+      duration: 2000,
+      icon: '🧹',
+    });
+  };
+
+  /**
+   * Cancel ongoing story generation
+   */
+  const cancelGeneration = () => {
+    if (isGeneratingRef.current) {
+      // Note: This doesn't actually cancel the HTTP request, 
+      // but stops the loading state and shows cancellation message
+      setIsLoading(false);
+      isGeneratingRef.current = false;
+      
+      toast.dismiss('generating-story');
+      toast('Story generation cancelled', {
+        id: 'generation-cancelled',
+        duration: 3000,
+        icon: '⏹️',
+      });
+    }
   };
 
   return {
     generateStory,
     resetStory,
+    cancelGeneration,
     isLoading,
     storyPages,
     error,

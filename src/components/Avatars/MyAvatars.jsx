@@ -35,8 +35,7 @@ function MyAvatars({ avatars, loading, onAvatarDeleted }) {
       const headers = { Authorization: token };
 
       // Fixed API endpoint - adjust this to match your actual endpoint
-      await axios.delete(`http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/avatars/${avatarToDelete.id}`, {
+      await axios.delete(`https://storytymeai-e64xw.ondigitalocean.app/api/avatars/${avatarToDelete.id}`, {
         headers,
       });
 

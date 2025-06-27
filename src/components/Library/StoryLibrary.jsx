@@ -31,8 +31,7 @@ function StoryCard({ story, href, onDelete, refreshStories }) {
       // Get token from localStorage or wherever you store it
       const token = localStorage.getItem('token'); // Adjust based on your auth implementation
       
-      const response = await axios.delete(`http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/stories/${story._id}`, {
+      const response = await axios.delete(`https://storytymeai-e64xw.ondigitalocean.app/api/stories/${story._id}`, {
         headers: {
           'Authorization': `${token}`
         }

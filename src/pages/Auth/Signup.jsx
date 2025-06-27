@@ -20,8 +20,7 @@ const SignUp = () => {
 
     try {
       // POST request to your backend endpoint
-      const response = await axios.post('http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth/register', {
+      const response = await axios.post('https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth/register', {
         username: data.fullName,
         email: data.email,
         password: data.password,

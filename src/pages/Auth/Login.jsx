@@ -21,8 +21,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       // Send login data to your backend
-      const response = await axios.post('http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth/login', {
+      const response = await axios.post('https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth/login', {
         email: data.email,
         password: data.password,
       });

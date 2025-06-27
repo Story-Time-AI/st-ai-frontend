@@ -76,15 +76,14 @@ export default function Index() {
       // const headers = { Authorization: `Bearer ${token}` };
       const headers = { Authorization: token };
 
-      const { data } = await axios.get("http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
+      const { data } = await axios.get("https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
         headers,
       });
 
       setAvatars(data.avatars || []);
     } catch (error) {
       console.error("Error fetching avatars:", error);
-      toast.error("Failed to fetch avatars");
+      // toast.error("Failed to fetch avatars");
     } finally {
       setLoading(false);
     }
@@ -113,8 +112,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
 
       // Send to server => generate avatar
       const { data: resData } = await axios.post(
-        "http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/generate-avatar",
+        "https://storytymeai-e64xw.ondigitalocean.app/api/generate-avatar",
         payload,
         { headers }
       );
@@ -163,8 +161,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/generate-avatar",
 
       // POST /api/avatar/save-avatar
       const { data } = await axios.post(
-        "http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/save-avatar",
+        "https://storytymeai-e64xw.ondigitalocean.app/api/save-avatar",
         payload,
         { headers }
       );

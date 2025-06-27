@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaCheckCircle, FaTrashAlt, FaPen, FaSpinner } from 'react-icons/fa';
 import axios from 'axios';
@@ -13,39 +13,53 @@ const PersonalInfo = () => {
   const [updating, setUpdating] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [deletingImage, setDeletingImage] = useState(false);
+  
+  // Use refs to prevent duplicate operations
+  const hasLoadedRef = useRef(false);
+  const isLoadingRef = useRef(false);
+  const isUpdatingRef = useRef(false);
+  const isUploadingRef = useRef(false);
+  const isDeletingRef = useRef(false);
 
   // Get token from localStorage
   const token = localStorage.getItem('token');
 
   // API base URL - adjust according to your backend
-  const API_BASE_URL = 'http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
+  const API_BASE_URL = 'https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth'
 
   // Fetch user data on component mount
   useEffect(() => {
-    fetchUserData();
+    if (!hasLoadedRef.current && !isLoadingRef.current) {
+      hasLoadedRef.current = true;
+      fetchUserData();
+    }
   }, []);
 
   /**
    * Convert file to base64
    */
-  const convertToBase64 = (file) => {
+  const convertToBase64 = useCallback((file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-  };
+  }, []);
 
   /**
    * Fetch user profile data
    */
-  const fetchUserData = async () => {
-    const loadingToast = toast.loading('Loading profile...');
+  const fetchUserData = useCallback(async () => {
+    // Prevent duplicate calls
+    if (isLoadingRef.current) return;
+    isLoadingRef.current = true;
+    
+    let loadingToast = null;
     
     try {
       setLoading(true);
+      loadingToast = toast.loading('Loading profile...', { id: 'loading-profile' });
 
       const response = await axios.get(`${API_BASE_URL}/profile`, {
         headers: {
@@ -64,33 +78,46 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
         setValue('email', user.email || '');
         setValue('phone', user.phone_number || '');
 
+        // Dismiss loading toast and show success
+        toast.dismiss('loading-profile');
         toast.success('Profile loaded successfully!', {
-          id: loadingToast,
+          id: 'profile-loaded',
+          duration: 2000,
         });
       }
     } catch (err) {
       console.error('Error fetching user data:', err);
+      
+      // Dismiss loading toast and show error
+      toast.dismiss('loading-profile');
       toast.error(err.response?.data?.error || 'Failed to load user data', {
-        id: loadingToast,
+        id: 'profile-load-error',
+        duration: 4000,
       });
     } finally {
       setLoading(false);
+      isLoadingRef.current = false;
     }
-  };
+  }, [token, setValue]);
 
   /**
    * Update user profile data
    */
-  const onSubmit = async (data) => {
-    const updateToast = toast.loading('Updating profile...');
+  const onSubmit = useCallback(async (data) => {
+    // Prevent duplicate submissions
+    if (isUpdatingRef.current) return;
+    isUpdatingRef.current = true;
+    
+    let updateToast = null;
     
     try {
       setUpdating(true);
+      updateToast = toast.loading('Updating profile...', { id: 'updating-profile' });
 
       const updateData = {
         username: data.firstName,
         phone_number: data.phone,
-         lastName: data.lastName,
+        lastName: data.lastName,
       };
 
       const response = await axios.put(
@@ -106,25 +133,36 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
 
       if (response.data && response.data.user) {
         setUserData(response.data.user);
+        
+        // Dismiss loading toast and show success
+        toast.dismiss('updating-profile');
         toast.success('Profile updated successfully! 🎉', {
-          id: updateToast,
-          duration: 4000,
+          id: 'profile-updated',
+          duration: 3000,
         });
       }
     } catch (err) {
       console.error('Error updating profile:', err);
+      
+      // Dismiss loading toast and show error
+      toast.dismiss('updating-profile');
       toast.error(err.response?.data?.error || 'Failed to update profile', {
-        id: updateToast,
+        id: 'profile-update-error',
+        duration: 4000,
       });
     } finally {
       setUpdating(false);
+      isUpdatingRef.current = false;
     }
-  };
+  }, [token]);
 
   /**
    * Handle image upload - Convert to base64 and send
    */
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = useCallback(async (e) => {
+    // Prevent duplicate uploads
+    if (isUploadingRef.current) return;
+    
     const file = e.target.files[0];
     if (!file) return;
 
@@ -132,6 +170,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
     if (!file.type.startsWith('image/')) {
       toast.error('Please select a valid image file', {
         icon: '🖼️',
+        id: 'invalid-file-type',
       });
       return;
     }
@@ -140,14 +179,17 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
     if (file.size > 5 * 1024 * 1024) {
       toast.error('File size must be less than 5MB', {
         icon: '📏',
+        id: 'file-too-large',
       });
       return;
     }
 
-    const uploadToast = toast.loading('Uploading image...');
+    isUploadingRef.current = true;
+    let uploadToast = null;
     
     try {
       setUploadingImage(true);
+      uploadToast = toast.loading('Uploading image...', { id: 'uploading-image' });
 
       // Convert file to base64
       const base64Image = await convertToBase64(file);
@@ -171,25 +213,35 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
       if (response.data && response.data.image_url) {
         setProfilePicture(response.data.image_url);
         setUserData(response.data.user);
+        
+        // Dismiss loading toast and show success
+        toast.dismiss('uploading-image');
         toast.success('Profile image uploaded successfully! 📸', {
-          id: uploadToast,
-          duration: 4000,
+          id: 'image-uploaded',
+          duration: 3000,
         });
       }
     } catch (err) {
       console.error('Error uploading image:', err);
+      
+      // Dismiss loading toast and show error
+      toast.dismiss('uploading-image');
       toast.error(err.response?.data?.error || 'Failed to upload image', {
-        id: uploadToast,
+        id: 'image-upload-error',
+        duration: 4000,
       });
     } finally {
       setUploadingImage(false);
+      isUploadingRef.current = false;
+      // Clear the input value to allow re-uploading the same file
+      e.target.value = '';
     }
-  };
+  }, [token, convertToBase64]);
 
   /**
    * Delete profile image
    */
-  const handleDeleteImage = async () => {
+  const handleDeleteImage = useCallback(async () => {
     if (!profilePicture) return;
 
     // Custom confirmation toast
@@ -217,14 +269,20 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
     ), {
       duration: Infinity,
       icon: '🗑️',
+      id: 'delete-image-confirm',
     });
-  };
+  }, [profilePicture]);
 
-  const confirmDeleteImage = async () => {
-    const deleteToast = toast.loading('Deleting image...');
+  const confirmDeleteImage = useCallback(async () => {
+    // Prevent duplicate deletions
+    if (isDeletingRef.current) return;
+    isDeletingRef.current = true;
+    
+    let deleteToast = null;
     
     try {
       setDeletingImage(true);
+      deleteToast = toast.loading('Deleting image...', { id: 'deleting-image' });
 
       const response = await axios.delete(
         `${API_BASE_URL}/profile/delete-image`,
@@ -238,25 +296,33 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
       if (response.data) {
         setProfilePicture(null);
         setUserData(response.data.user);
+        
+        // Dismiss loading toast and show success
+        toast.dismiss('deleting-image');
         toast.success('Profile image deleted successfully! 🗑️', {
-          id: deleteToast,
+          id: 'image-deleted',
           duration: 3000,
         });
       }
     } catch (err) {
       console.error('Error deleting image:', err);
+      
+      // Dismiss loading toast and show error
+      toast.dismiss('deleting-image');
       toast.error(err.response?.data?.error || 'Failed to delete image', {
-        id: deleteToast,
+        id: 'image-delete-error',
+        duration: 4000,
       });
     } finally {
       setDeletingImage(false);
+      isDeletingRef.current = false;
     }
-  };
+  }, [token]);
 
   /**
    * Handle account deletion
    */
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = useCallback(() => {
     // Custom confirmation toast for account deletion
     toast((t) => (
       <div className="flex flex-col space-y-3">
@@ -270,6 +336,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
               toast.error('Account deletion feature is not implemented yet', {
                 duration: 5000,
                 icon: '🚧',
+                id: 'account-delete-not-implemented',
               });
             }}
           >
@@ -286,8 +353,9 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
     ), {
       duration: Infinity,
       icon: '⚠️',
+      id: 'delete-account-confirm',
     });
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -327,6 +395,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
       {/* Toaster component for displaying toasts */}
       <Toaster
         position="top-right"
+        gutter={8}
         toastOptions={{
           duration: 3000,
           style: {

@@ -42,8 +42,7 @@ export default function useStoryCheckout(authToken) {
       };
 
       const response = await axios.post(
-        "http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.appapi/create-checkout",
+        "https://storytymeai-e64xw.ondigitalocean.app/api/create-checkout",
         checkoutPayload,
         {
           headers: {

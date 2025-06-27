@@ -5,6 +5,7 @@ import axios from "axios";
 import { CiCirclePlus } from "react-icons/ci";
 import useGenerateStory from "../../hooks/useGenerateStory.js";
 import useGenerateCustomStory from "../../hooks/useGenerateCustomStory.js";
+import { Toaster } from "react-hot-toast";
 
 const Index = () => {
   const {
@@ -107,8 +108,7 @@ const Index = () => {
 
     const fetchAvatars = async () => {
       try {
-        const response = await axios.get("http://localhost:5002
-https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
+        const response = await axios.get("https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
           headers: { Authorization: token },
         });
         setAvatars(response.data.avatars);
@@ -470,12 +470,7 @@ https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
           </div>
         )}
 
-        {/* Error Display */}
-        {error && (
-          <div className="mt-4 p-4 bg-red-100 text-red-700 rounded-md">
-            {error.message || error.toString()}
-          </div>
-        )}
+      
 
         {/* Submit Button */}
         <div>
@@ -493,6 +488,8 @@ https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
             )}
         </div>
       </form>
+        {/* Add Toaster component to display toasts */}
+      <Toaster position="top-right" />
     </div>
   );
 };
