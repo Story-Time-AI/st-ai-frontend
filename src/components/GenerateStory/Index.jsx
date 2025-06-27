@@ -131,7 +131,7 @@ const Index = () => {
       // Redirect to library with the story ID
     const storyId = aiStoryPages?.data?._id;
       if (storyId) {
-        window.location.href = `http://localhost:5173/library/${storyId}`;
+        window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
       }
     }
   }, [aiStoryPages]);
@@ -142,7 +142,7 @@ const Index = () => {
       // Redirect to library with the story ID
    const storyId = customStoryData?.data?._id;
       if (storyId) {
-        window.location.href = `http://localhost:5173/library/${storyId}`;
+        window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
       }
     }
   }, [customStoryData]);
