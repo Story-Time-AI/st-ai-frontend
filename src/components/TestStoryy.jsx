@@ -14,7 +14,8 @@ const StoryForm = () => {
     }
 
     try {
-      const response = await fetch('https://storytymeai-e64xw.ondigitalocean.app//api/generate-story', {
+      const response = await fetch('http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/generate-story', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, characterName, templateKey }),

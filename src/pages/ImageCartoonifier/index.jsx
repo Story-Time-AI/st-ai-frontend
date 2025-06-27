@@ -76,7 +76,8 @@ export default function Index() {
       // const headers = { Authorization: `Bearer ${token}` };
       const headers = { Authorization: token };
 
-      const { data } = await axios.get("https://storytymeai-e64xw.ondigitalocean.app//api/avatars", {
+      const { data } = await axios.get("http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
         headers,
       });
 
@@ -112,7 +113,8 @@ export default function Index() {
 
       // Send to server => generate avatar
       const { data: resData } = await axios.post(
-        "https://storytymeai-e64xw.ondigitalocean.app//api/generate-avatar",
+        "http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/generate-avatar",
         payload,
         { headers }
       );
@@ -161,7 +163,8 @@ export default function Index() {
 
       // POST /api/avatar/save-avatar
       const { data } = await axios.post(
-        "https://storytymeai-e64xw.ondigitalocean.app//api/save-avatar",
+        "http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/save-avatar",
         payload,
         { headers }
       );

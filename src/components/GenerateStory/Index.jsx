@@ -107,7 +107,8 @@ const Index = () => {
 
     const fetchAvatars = async () => {
       try {
-        const response = await axios.get("https://storytymeai-e64xw.ondigitalocean.app//api/avatars", {
+        const response = await axios.get("http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/avatars", {
           headers: { Authorization: token },
         });
         setAvatars(response.data.avatars);

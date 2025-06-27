@@ -45,7 +45,8 @@ export default function useDownloadEligibility(storyIdentifier, authToken, autoC
 
     try {
       const response = await axios.get(
-        `https://storytymeai-e64xw.ondigitalocean.app/api/can-download/${storyIdentifier}`,
+        `http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.appapi/can-download/${storyIdentifier}`,
         {
           headers: {
             Authorization: `${authToken}`,

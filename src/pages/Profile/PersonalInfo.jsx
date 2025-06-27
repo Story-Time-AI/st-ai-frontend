@@ -18,7 +18,8 @@ const PersonalInfo = () => {
   const token = localStorage.getItem('token');
 
   // API base URL - adjust according to your backend
-  const API_BASE_URL = 'https://storytymeai-e64xw.ondigitalocean.app//api/v1/auth';
+  const API_BASE_URL = 'http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth';
 
   // Fetch user data on component mount
   useEffect(() => {

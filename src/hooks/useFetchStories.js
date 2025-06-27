@@ -10,7 +10,8 @@ export default function useFetchStories(token) {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`https://storytymeai-e64xw.ondigitalocean.app//api/my-stories?page=${page}`, {
+      const response = await axios.get(`http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/my-stories?page=${page}`, {
         headers: {
           Authorization: `${token}`,
         },

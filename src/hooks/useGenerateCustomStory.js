@@ -28,7 +28,8 @@ const useGenerateCustomStory = () => {
 
     try {
       const response = await axios.post(
-        "https://storytymeai-e64xw.ondigitalocean.app//api/generate-custom",
+        "http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/generate-custom",
         {
           storyTitle: data.storyTitle,
           animationStyle: data.animationStyle,

@@ -28,7 +28,8 @@ const useGenerateStory = () => {
 
     try {
       const response = await axios.post(
-        "https://storytymeai-e64xw.ondigitalocean.app//api/generate",
+        "http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/generate",
         {
           storyTitle: storyData.storyTitle,
           animationStyle: storyData.animationStyle,

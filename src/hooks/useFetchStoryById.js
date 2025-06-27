@@ -26,7 +26,8 @@ export default function useFetchStoryById(storyId, token) {
 
       try {
         const response = await axios.get(
-          `https://storytymeai-e64xw.ondigitalocean.app//api/stories/${storyId}`,
+          `http://localhost:5002
+https://storytymeai-e64xw.ondigitalocean.app/api/stories/${storyId}`,
           {
             headers: {
               Authorization: `${token}`, // Removed "Bearer " since you don't use it in other hooks
