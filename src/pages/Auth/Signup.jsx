@@ -30,6 +30,7 @@ const SignUp = () => {
       // e.g., show a success message, redirect, etc.
       console.log('Server response:', response.data);
       alert('Registered successfully!');
+      window.location.href = '/login'; // 
       
     } catch (error) {
       // Handle and display errors in a user-friendly manner
