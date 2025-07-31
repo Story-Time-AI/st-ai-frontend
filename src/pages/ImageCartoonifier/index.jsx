@@ -188,6 +188,7 @@ export default function Index() {
 
   return (
     <div>
+
       <Toaster 
         position="top-right"
         toastOptions={{
@@ -270,11 +271,12 @@ export default function Index() {
             className="input input-bordered w-full mb-4"
           >
             <option value="">Select a style</option>
-            <option value="Kodomo">Kodomo </option>
-            <option value="Josei">Josei </option>
-            <option value="Seinen">Seinen </option>
-            <option value="Shōjo">Shōjo </option>
-            <option value="Shōnen">Shōnen </option>
+            <option value="Kodomo">Japanese Anime </option>
+            <option value="Josei">Cinematic </option>
+            <option value="Seinen">Disney Character </option>
+            <option value="Shōjo">Photographic </option>
+            <option value="Shōnen">Comic Book </option>
+              <option value="Shōnen">Line Art </option>
           </select>
           {errors.animeStyle && (
             <p className="text-red-500 text-sm">{errors.animeStyle.message}</p>
@@ -388,7 +390,8 @@ export default function Index() {
                   ) : (
                     <div className="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border-2 border-purple-100 shadow-lg">
                       <div className="text-center mb-6">
-                        <div className="w-16 h-16 bg-gradient-to-r from-deepPurple to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-deepPurple to-purple-600
+                         rounded-full flex items-center justify-center mx-auto mb-4">
                           <FaSave className="text-white text-2xl" />
                         </div>
                         <h3 className="text-2xl font-bold text-gray-800 mb-2">
@@ -409,7 +412,7 @@ export default function Index() {
                             placeholder="e.g., My Awesome Character, Cool Warrior..."
                             value={avatarName}
                             onChange={(e) => setAvatarName(e.target.value)}
-                            className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-deepPurple/20 focus:border-deepPurple outline-none transition-all text-lg bg-white/80"
+                            className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-deepPurple/20 focus:border-deepPurple outline-none transition-all text-lg bg-white/80"
                             disabled={isSaving}
                             maxLength={50}
                           />
@@ -424,7 +427,9 @@ export default function Index() {
                           <button
                             onClick={handleSaveAvatar}
                             disabled={isSaving || !avatarName.trim()}
-                            className="flex-1 flex items-center justify-center gap-3 bg-gradient-to-r from-deepPurple to-purple-600 hover:from-purple-600 hover:to-deepPurple text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                            className="flex-1 flex items-center justify-center gap-3 
+                            bg-gradient-to-r from-deepPurple to-purple-600 hover:from-purple-600
+                             hover:to-deepPurple text-white px-3 py-3 rounded-xl font-semibold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                           >
                             {isSaving ? (
                               <>
@@ -442,7 +447,7 @@ export default function Index() {
                           <button
                             onClick={() => setShowSaveForm(false)}
                             disabled={isSaving}
-                            className="px-6 py-4 border-2 border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl font-semibold text-lg transition-colors disabled:opacity-50"
+                            className="px-3 py-3 border-2 border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl font-semibold text-lg transition-colors disabled:opacity-50"
                           >
                             Cancel
                           </button>

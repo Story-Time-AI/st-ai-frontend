@@ -39,11 +39,6 @@ const useGenerateStory = () => {
     
     const token = localStorage.getItem("token");
 
-    // Show loading toast
-    const loadingToast = toast.loading('Creating your magical story...', {
-      id: 'generating-story',
-      duration: Infinity, // Keep until dismissed
-    });
 
     try {
       const response = await axios.post(

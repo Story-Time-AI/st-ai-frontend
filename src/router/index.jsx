@@ -13,25 +13,30 @@ import StoryPreview from "../components/StoryPreview";
 import UserDetails from "../components/Admin/ManageUsers/UserDetails";
 import StoryDetails from "../pages/Library/StoryDetails";
 import GenerateStory from "../pages/GenerateStory/Index";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_relativeSplatPath: true }}>
       <Routes>
-        {/* Authentication Routes */}
+        {/* Public Routes */}
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Home />} />
 
-        {/* Main Routes */}
-        <Route element={<MainLayout />}>
+        {/* Private Routes */}
+        <Route element={
+          <PrivateRoute>
+            <MainLayout />
+          </PrivateRoute>
+        }>
           <Route path="/story-generator" element={<GenerateStory />} />
           <Route path="/character-creator" element={<ImageCartoonifier />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/library/:id" element={<StoryDetails />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/manage-stories" element={<ManageStories />} />
-          <Route path="/library/:id" element={<StoryDetails />} />
           <Route path="/manage-users/:id" element={<UserDetails />} />
         </Route>
       </Routes>

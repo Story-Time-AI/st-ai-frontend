@@ -6,6 +6,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import useGenerateStory from "../../hooks/useGenerateStory.js";
 import useGenerateCustomStory from "../../hooks/useGenerateCustomStory.js";
 import { Toaster } from "react-hot-toast";
+import StoryGenerationModal from "../modals/StoryGenerationModal.jsx";
 
 const Index = () => {
   const {
@@ -59,6 +60,10 @@ const Index = () => {
   const [selectedAnimationStyle, setSelectedAnimationStyle] = useState("Japanese Anime");
   const [avatars, setAvatars] = useState([]);
   const [fetchError, setFetchError] = useState(null);
+  
+  // Modal state
+  const [showGenerationModal, setShowGenerationModal] = useState(false);
+  const [currentGenerationData, setCurrentGenerationData] = useState(null);
 
   // Watch fields for dynamic updates
   const numberOfPages = watch("numberOfPages", 3);
@@ -124,13 +129,24 @@ const Index = () => {
   }, []);
 
   console.log("storyPages:", aiStoryPages);
+
+  // Show modal when generation starts
+  useEffect(() => {
+    const isLoading = aiStoryLoading || customStoryLoading;
+    if (isLoading && !showGenerationModal) {
+      setShowGenerationModal(true);
+    } else if (!isLoading && showGenerationModal) {
+      setShowGenerationModal(false);
+    }
+  }, [aiStoryLoading, customStoryLoading, showGenerationModal]);
  
   // Redirect to library when AI story generation is completed
   useEffect(() => {
     if (aiStoryPages) {
       // Redirect to library with the story ID
-    const storyId = aiStoryPages?.data?._id;
+      const storyId = aiStoryPages?.data?._id;
       if (storyId) {
+        setShowGenerationModal(false);
         window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
       }
     }
@@ -140,12 +156,18 @@ const Index = () => {
   useEffect(() => {
     if (customStoryData) {
       // Redirect to library with the story ID
-   const storyId = customStoryData?.data?._id;
+      const storyId = customStoryData?.data?._id;
       if (storyId) {
+        setShowGenerationModal(false);
         window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
       }
     }
   }, [customStoryData]);
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setShowGenerationModal(false);
+  };
 
   // Form submit handler
   const onSubmit = async (data) => {
@@ -159,6 +181,14 @@ const Index = () => {
       setFetchError(new Error("Please select an avatar before generating a story"));
       return;
     }
+
+    // Set current generation data for the modal
+    setCurrentGenerationData({
+      storyTitle: data.storyTitle,
+      animationStyle: data.animationStyle,
+      numberOfPages: parseInt(data.numberOfPages),
+      storyType: data.storyType,
+    });
 
     try {
       if (selectedStoryType === "AI Written Story") {
@@ -227,6 +257,16 @@ const Index = () => {
 
   return (
     <div data-theme="light" className="p-8 bg-blue-50 min-h-screen">
+      {/* Story Generation Modal */}
+      <StoryGenerationModal
+        isOpen={showGenerationModal}
+        storyTitle={currentGenerationData?.storyTitle}
+        animationStyle={currentGenerationData?.animationStyle}
+        numberOfPages={currentGenerationData?.numberOfPages}
+        storyType={currentGenerationData?.storyType}
+        onRequestClose={handleModalClose}
+      />
+
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <AvatarPickerForm
@@ -470,8 +510,6 @@ const Index = () => {
           </div>
         )}
 
-      
-
         {/* Submit Button */}
         <div>
           <button
@@ -485,10 +523,11 @@ const Index = () => {
             <p className="text-sm text-gray-500 mt-2">
               Please wait for avatars to load before generating a story.
             </p>
-            )}
+          )}
         </div>
       </form>
-        {/* Add Toaster component to display toasts */}
+      
+      {/* Add Toaster component to display toasts */}
       <Toaster position="top-right" />
     </div>
   );
