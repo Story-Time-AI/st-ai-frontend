@@ -61,7 +61,7 @@ const SignUp = () => {
         <h2 className="text-3xl font-semibold text-start text-white mb-1">Create an Account</h2>
         <p className="text-start text-gray-400 mb-6">Enter your details to create a new account!</p>
       {/* Google Sign-UP Component */}
-              <div className="mb-4">
+              <div className="mb-4 flex items-center justify-center">
                 <GoogleAuth mode="login" title="Sign in with Google" />
               </div>
 

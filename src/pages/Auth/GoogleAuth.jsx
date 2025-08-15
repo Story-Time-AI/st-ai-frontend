@@ -86,44 +86,36 @@ export default function GoogleAuth({
     });
   };
 
+  
+
   return (
-    <div style={{ position: "relative" }} className="w-full">
+    <div className="w-full max-w-md mx-auto relative">
+   
+      {/* Loading Overlay */}
       {loading && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 9999,
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            borderRadius: "8px",
-            padding: "20px",
-          }}
-        >
-          <GridLoader color="#3B82F6" size={8} />
-        </div>
+     
+            <GridLoader color="#3B82F6" size={8} />
+      
       )}
       
-      <div className="flex items-center justify-center w-full">
-        <GoogleOAuthProvider clientId={clientId}>
-          <div className="w-full">
-            <GoogleLogin
-              onSuccess={handleSuccess}
-              onError={handleError}
-              auto_select={false}
-              prompt="select_account"
-              size="large"
-              width="100%"
-              text={mode === 'signup' ? 'signup_with' : 'continue_with'}
-              theme="outline"
-              shape="rectangular"
-              disabled={loading}
-              locale="en"
-            />
-          </div>
-        </GoogleOAuthProvider>
-      </div>
+      <GoogleOAuthProvider clientId={clientId}>
+        {/* Direct Google Login with custom styling */}
+        <div className="my-1">
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={handleError}
+            auto_select={false}
+            prompt="select_account"
+            size="large"
+            width="100%"
+            text={mode === 'signup' ? 'signup_with' : 'continue_with'}
+            theme="outline"
+            shape="rectangular"
+            disabled={loading}
+            locale="en"
+          />
+        </div>
+      </GoogleOAuthProvider>
     </div>
   );
 }
