@@ -6,6 +6,7 @@ import axios from 'axios'; // <-- Import axios
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button/Button';
+import GoogleAuth from './GoogleAuth';
 
 const SignUp = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
@@ -59,11 +60,10 @@ const SignUp = () => {
       <div className="w-full max-w-xl p-8 rounded-lg shadow-lg bg-gray-800">
         <h2 className="text-3xl font-semibold text-start text-white mb-1">Create an Account</h2>
         <p className="text-start text-gray-400 mb-6">Enter your details to create a new account!</p>
-        
-        {/* Google Sign-up Button */}
-        <button className="btn btn-outline w-full mb-4 flex items-center justify-center gap-2 text-gray-300 border-gray-600 hover:border-gray-500 hover:text-white">
-          <FaGoogle /> Sign up with Google
-        </button>
+      {/* Google Sign-UP Component */}
+              <div className="mb-4">
+                <GoogleAuth mode="login" title="Sign in with Google" />
+              </div>
 
         {/* Divider */}
         <div className="flex items-center my-4">

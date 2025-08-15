@@ -1,55 +1,84 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaUser, FaGoogle } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
-import axios from 'axios'; // <--- Import axios
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button/Button';
-
+import GoogleAuth from './GoogleAuth';
 const Login = () => {
- 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   
   const navigate = useNavigate();
 
+  // Use local endpoint for development
+  const API_BASE_URL = 'https://storytymeai-e64xw.ondigitalocean.app';
+
   // Handle form submission
   const onSubmit = async (data) => {
     setIsLoading(true);
+    
+    // Show loading toast
+    const loadingToast = toast.loading('Signing you in...', {
+      position: 'top-right',
+    });
+
     try {
       // Send login data to your backend
-      const response = await axios.post('https://storytymeai-e64xw.ondigitalocean.app/api/v1/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/auth/login`, {
         email: data.email,
         password: data.password,
       });
 
       // If successful, handle the response
-      // e.g., save token, navigate to a protected route, etc.
       console.log('Login success:', response.data);
       localStorage.setItem('token', response.data.token);
-      // If your server returns a token, for example:
-      // localStorage.setItem('token', response.data.token);
 
-      // Navigate to library (or any other route)
-      navigate('/library');
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+
+      toast.success('Login successful!', {
+        duration: 2000,
+        position: 'top-right',
+      });
+
+      // Navigate to library (fallback URL)
+      setTimeout(() => {
+        navigate('/library');
+      }, 1000);
+
     } catch (error) {
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+
       // Handle error scenarios
       if (error.response) {
         // The server responded with a non-2xx status code
         console.error('Error response:', error.response.data);
         // Display the server's error message (if available)
-        alert(error.response.data.error || 'Something went wrong. Please try again.');
+        toast.error(error.response.data.error || error.response.data.message || 'Invalid credentials. Please try again.', {
+          duration: 4000,
+          position: 'top-right',
+        });
       } else if (error.request) {
         // The request was made but no response was received
         console.error('No response received:', error.request);
-        alert('No response from the server. Please try again later.');
+        toast.error('No response from the server. Please try again later.', {
+          duration: 4000,
+          position: 'top-right',
+        });
       } else {
         // An error occurred in setting up the request
         console.error('Request error:', error.message);
-        alert('An unexpected error occurred. Please try again.');
+        toast.error('An unexpected error occurred. Please try again.', {
+          duration: 4000,
+          position: 'top-right',
+        });
       }
     } finally {
       setIsLoading(false);
@@ -58,16 +87,46 @@ const Login = () => {
 
   return (
     <div data-theme="dark" className="flex items-center justify-center h-auto py-10 w-full">
+      {/* React Hot Toast Container */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            style: {
+              background: '#10B981',
+              color: '#fff',
+            },
+          },
+          error: {
+            style: {
+              background: '#EF4444',
+              color: '#fff',
+            },
+          },
+          loading: {
+            style: {
+              background: '#3B82F6',
+              color: '#fff',
+            },
+          },
+        }}
+      />
+      
       <div className="w-full max-w-md p-8 rounded-lg shadow-lg bg-gray-800">
         <h2 className="text-3xl font-semibold text-start text-white mb-1">Sign In</h2>
         <p className="text-start text-gray-400 mb-6">
           Enter your email and password to sign in!
         </p>
         
-        {/* Google Sign-in Button */}
-        <button className="btn btn-outline w-full mb-4 flex items-center justify-center gap-2 text-gray-300 border-gray-600 hover:border-gray-500 hover:text-white">
-          <FaGoogle /> Sign in with Google
-        </button>
+        {/* Google Sign-in Component */}
+        <div className="mb-4">
+          <GoogleAuth mode="login" title="Sign in with Google" />
+        </div>
 
         {/* Divider */}
         <div className="flex items-center my-4">
@@ -81,7 +140,7 @@ const Login = () => {
           <Input
             label="Email*"
             type="email"
-            placeholder="mail@simmple.com"
+            placeholder="mail@simple.com"
             error={errors.email?.message}
             icon={<FaUser />}
             required
@@ -98,7 +157,7 @@ const Login = () => {
           <Input
             label="Password*"
             type="password"
-            placeholder="Min. 8 characters"
+            placeholder="Min. 6 characters"
             error={errors.password?.message}
             icon={<AiOutlineEyeInvisible />}
             required
@@ -107,7 +166,7 @@ const Login = () => {
               required: 'Password is required',
               minLength: {
                 value: 6,
-                message: 'Password must be at least 8 characters',
+                message: 'Password must be at least 6 characters',
               },
             })}
           />
