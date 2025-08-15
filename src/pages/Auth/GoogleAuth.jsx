@@ -86,17 +86,11 @@ export default function GoogleAuth({
     });
   };
 
-  
-
   return (
-    <div className="w-full max-w-md mx-auto relative">
+    <div className="w-full max-w-md mx-auto relative  flex items-center justify-center">
    
       {/* Loading Overlay */}
-      {loading && (
-     
-            <GridLoader color="#3B82F6" size={8} />
-      
-      )}
+      {loading && ( <GridLoader color="#3B82F6" size={8} /> )}
       
       <GoogleOAuthProvider clientId={clientId}>
         {/* Direct Google Login with custom styling */}
