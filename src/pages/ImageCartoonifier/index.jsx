@@ -271,12 +271,12 @@ export default function Index() {
             className="input input-bordered w-full mb-4"
           >
             <option value="">Select a style</option>
-            <option value="Kodomo">Japanese Anime </option>
-            <option value="Josei">Cinematic </option>
-            <option value="Seinen">Disney Character </option>
-            <option value="Shōjo">Photographic </option>
-            <option value="Shōnen">Comic Book </option>
-              <option value="Shōnen">Line Art </option>
+            <option value="Japanese Anime">Japanese Anime </option>
+            <option value="Cinematic">Cinematic </option>
+            <option value="Disney Character">Disney Character </option>
+            <option value="Photographic">Photographic </option>
+            <option value="Comic Book">Comic Book </option>
+              <option value="Line Art">Line Art </option>
           </select>
           {errors.animeStyle && (
             <p className="text-red-500 text-sm">{errors.animeStyle.message}</p>
