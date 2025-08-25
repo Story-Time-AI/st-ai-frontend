@@ -19,6 +19,13 @@ const [windowDimensions, setWindowDimensions] = useState({
   height: window.innerHeight,
 });
 
+  // Debug logging
+  console.log("Raw URL params:", useParams());
+  console.log("Extracted ID:", id);
+  console.log("ID type:", typeof id);
+  console.log("ID length:", id?.length);
+  console.log("Full URL:", window.location.href);
+
 // Check for success parameter and show confetti
 useEffect(() => {
   const success = searchParams.get("success");
