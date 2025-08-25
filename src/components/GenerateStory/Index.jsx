@@ -147,7 +147,7 @@ const Index = () => {
       const storyId = aiStoryPages?.data?._id;
       if (storyId) {
         setShowGenerationModal(false);
-        window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
+        window.location.href = `https://storytyme.ai/library/${storyId}`;
       }
     }
   }, [aiStoryPages]);
@@ -159,7 +159,7 @@ const Index = () => {
       const storyId = customStoryData?.data?._id;
       if (storyId) {
         setShowGenerationModal(false);
-        window.location.href = `https://merry-chaja-8d1e1b.netlify.app/library/${storyId}`;
+        window.location.href = `https://storytyme.ai/library/${storyId}`;
       }
     }
   }, [customStoryData]);
