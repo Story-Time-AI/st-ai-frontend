@@ -139,7 +139,7 @@ const StoryGenerationModal = ({
                 Continue in Background
               </button>
               <button
-                onClick={() => window.location.href = 'https://merry-chaja-8d1e1b.netlify.app/library'}
+                onClick={() => window.location.href = 'https://storytyme.ai/library'}
                 className="flex-1 px-4 py-3 bg-deepPurple text-sm text-white rounded-lg hover:bg-purple-900 transition-all font-medium"
               >
                 Go to Library

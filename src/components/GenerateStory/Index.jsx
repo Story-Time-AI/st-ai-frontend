@@ -299,7 +299,7 @@ const Index = () => {
 
         {/* Animation Style Selection */}
         <div>
-          <h2 className="text-lg font-bold mb-4">Choose Animation Style</h2>
+          <h2 className="text-sm mb-2">Choose Animation Style</h2>
           <select
             className="select select-bordered w-full"
             {...register("animationStyle", {
@@ -324,7 +324,7 @@ const Index = () => {
 
         {/* Story Type Selection */}
         <div>
-          <h2 className="text-lg font-bold mb-4">Choose Story Type</h2>
+          <h2 className="text-sm font-bold mb-4">Choose Story Type</h2>
           <div className="space-y-2">
             {["Create Your Own Story", "AI Written Story"].map((type) => (
               <label
@@ -452,61 +452,7 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Additional Character Definition Section for AI Stories */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold text-gray-700">Define Additional Characters (Optional)</h3>
-              <p className="text-sm text-gray-500">Your selected avatar will be the main character. You can add companion and antagonist characters below.</p>
-              
-              {/* Companion */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-bold text-gray-600">
-                    Companion Name (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Kyo"
-                    className="input input-bordered w-full"
-                    {...register("companionName")}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-bold text-gray-600">
-                    Companion Description (Optional)
-                  </label>
-                  <textarea
-                    placeholder="Describe the companion character"
-                    className="textarea textarea-bordered w-full"
-                    {...register("companionDescription")}
-                  ></textarea>
-                </div>
-              </div>
-
-              {/* Antagonist */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-bold text-gray-600">
-                    Antagonist Name (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Shadow King"
-                    className="input input-bordered w-full"
-                    {...register("antagonistName")}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-bold text-gray-600">
-                    Antagonist Description (Optional)
-                  </label>
-                  <textarea
-                    placeholder="Describe the antagonist character"
-                    className="textarea textarea-bordered w-full"
-                    {...register("antagonistDescription")}
-                  ></textarea>
-                </div>
-              </div>
-            </div>
+          
           </div>
         )}
 
