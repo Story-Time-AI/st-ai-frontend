@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { useParams,useSearchParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import StoryPreview from "../../components/StoryPreview";
 import useFetchStoryById from "../../hooks/useFetchStoryById";
 import useDownloadEligibility from "../../hooks/useDownloadEligibility";
@@ -13,42 +13,71 @@ const StoryDetails = () => {
   const { story, loading, error } = useFetchStoryById(id, token);
 
   const [searchParams] = useSearchParams();
-const [showConfetti, setShowConfetti] = useState(false);
-const [windowDimensions, setWindowDimensions] = useState({
-  width: window.innerWidth,
-  height: window.innerHeight,
-});
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-  // Debug logging
-  console.log("Raw URL params:", useParams());
-  console.log("Extracted ID:", id);
-  console.log("ID type:", typeof id);
-  console.log("ID length:", id?.length);
-  console.log("Full URL:", window.location.href);
+  // STEP 1: Capture referral code from URL on page load
+  useEffect(() => {
+    // Get referral code from URL parameter (?ref=ABC123)
+    const referralCode = searchParams.get('ref');
+    
+    if (referralCode) {
+      // Store in localStorage for later use during checkout
+      localStorage.setItem('referralCode', referralCode.toUpperCase());
+      console.log('Referral code captured:', referralCode);
+      
+      // Optional: Clean URL by removing the ref parameter
+      const newUrl = new URL(window.location);
+      newUrl.searchParams.delete('ref');
+      window.history.replaceState({}, document.title, newUrl.pathname + newUrl.search);
+    }
 
-// Check for success parameter and show confetti
-useEffect(() => {
-  const success = searchParams.get("success");
-  if (success === "true") {
-    setShowConfetti(true);
-    // Hide confetti after 5 seconds
-    const timer = setTimeout(() => setShowConfetti(false), 5000);
-    return () => clearTimeout(timer);
-  }
-}, [searchParams]);
+    // STEP 2: Initialize Rewardful tracking (same as upgrade page)
+    if (typeof window !== "undefined" && window.rewardful) {
+      window.rewardful("ready", () => {
+        const rId = window.Rewardful?.referral;
+        console.log("Rewardful referral ID:", rId);
+        
+        // Store Rewardful referral if available
+        if (rId) {
+          localStorage.setItem('rewardfulReferral', rId);
+        }
+      });
+    } else {
+      console.warn("Rewardful not detected yet.");
+    }
+  }, [searchParams]);
 
-// Handle window resize for confetti
-useEffect(() => {
-  const handleResize = () => {
-    setWindowDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  };
+  // Check for success parameter and show confetti
+  useEffect(() => {
+    const success = searchParams.get("success");
+    if (success === "true") {
+      setShowConfetti(true);
+      // Clear referral codes after successful purchase
+      localStorage.removeItem('referralCode');
+      localStorage.removeItem('rewardfulReferral');
+      
+      // Hide confetti after 5 seconds
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  // Handle window resize for confetti
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   
   // Check download eligibility for this story
   const {
@@ -58,7 +87,7 @@ useEffect(() => {
     checkDownloadEligibility
   } = useDownloadEligibility(id, token, true);
 
-  // Checkout functionality
+  // Checkout functionality (now includes referral support)
   const {
     purchaseStory,
     checkoutInProgress,
@@ -92,8 +121,9 @@ useEffect(() => {
         storyTitle={story?.storyTitle || story?.title || "Loading..."}
         storyId={id}
         showBackButton={true}
-        libraryPath="/library" // Adjust this to your actual library route
+        libraryPath="/library"
       />
+      
       <StoryPreview 
         story={story} 
         isLoading={loading}
@@ -110,14 +140,14 @@ useEffect(() => {
       />
 
       {showConfetti && downloadPermitted && (
-      <Confetti
-        width={windowDimensions.width}
-        height={windowDimensions.height}
-        recycle={false}
-        numberOfPieces={200}
-        gravity={0.3}
-      />
-    )}
+        <Confetti
+          width={windowDimensions.width}
+          height={windowDimensions.height}
+          recycle={false}
+          numberOfPieces={200}
+          gravity={0.3}
+        />
+      )}
     </div>
   );
 };

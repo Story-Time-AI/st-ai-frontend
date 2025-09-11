@@ -14,6 +14,7 @@ import UserDetails from "../components/Admin/ManageUsers/UserDetails";
 import StoryDetails from "../pages/Library/StoryDetails";
 import GenerateStory from "../pages/GenerateStory/Index";
 import PrivateRoute from "./PrivateRoute";
+import AffiliatePage from "../pages/Affiliate/Index";
 
 const AppRouter = () => {
   return (
@@ -23,7 +24,7 @@ const AppRouter = () => {
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Home />} />
-
+            <Route path="/affiliate" element={<AffiliatePage />} />
         {/* Private Routes */}
         <Route element={
           <PrivateRoute>
@@ -33,6 +34,7 @@ const AppRouter = () => {
           <Route path="/story-generator" element={<GenerateStory />} />
           <Route path="/character-creator" element={<ImageCartoonifier />} />
           <Route path="/profile" element={<Profile />} />
+
           <Route path="/library" element={<Library />} />
           <Route path="/library/:id" element={<StoryDetails />} />
           <Route path="/manage-users" element={<ManageUsers />} />

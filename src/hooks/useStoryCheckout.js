@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 /**
- * Custom hook for handling story checkout/purchase functionality.
+ * Custom hook for handling story checkout/purchase functionality with referral support.
  *
  * @param {string} authToken JWT or similar authentication token
  * @returns {Object} { 
@@ -35,10 +35,25 @@ export default function useStoryCheckout(authToken) {
     setCheckoutInProgress(true);
 
     try {
+      // Get referral code from Rewardful or localStorage
+      let referralCode = null;
+      
+      // First try Rewardful
+      if (typeof window !== "undefined" && window.Rewardful?.referral) {
+        referralCode = window.Rewardful.referral;
+        console.log("Using Rewardful referral code:", referralCode);
+      }
+      // Fallback to localStorage
+      else if (typeof window !== "undefined") {
+        referralCode = localStorage.getItem('referralCode') || localStorage.getItem('rewardfulReferral');
+        console.log("Using stored referral code:", referralCode);
+      }
+
       const checkoutPayload = {
         storyId: storyIdentifier,
         ...(storyTitle && { title: storyTitle }),
-        ...(totalPages && { pages: totalPages })
+        ...(totalPages && { pages: totalPages }),
+        ...(referralCode && { referralCode: referralCode }) // Add referral code if available
       };
 
       const response = await axios.post(
@@ -56,6 +71,13 @@ export default function useStoryCheckout(authToken) {
       if (response.data && response.status === 200) {
         setPurchaseSuccess(true);
         setCanDownloadStory(response.data.canDownload || false);
+        
+        // Clear referral codes after successful checkout creation
+        if (typeof window !== "undefined" && referralCode) {
+          localStorage.removeItem('referralCode');
+          localStorage.removeItem('rewardfulReferral');
+          console.log("Cleared referral codes after checkout");
+        }
         
         // Return the response data so the component can access the URL
         return response.data;
