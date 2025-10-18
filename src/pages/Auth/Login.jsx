@@ -182,9 +182,9 @@ const Login = () => {
               />
               <span className="text-sm">Keep me logged in</span>
             </label>
-            <a href="/forgot-password" className="text-sm text-blue-400 hover:underline">
+            {/* <a href="/forgot-password" className="text-sm text-blue-400 hover:underline">
               Forget password?
-            </a>
+            </a> */}
           </div>
 
           <Button
